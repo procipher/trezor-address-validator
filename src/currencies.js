@@ -314,9 +314,9 @@ var CURRENCIES = [
     }, {
         name: 'Monero',
         symbol: 'xmr',
-        addressTypes: { prod: ['18'], testnet: ['53'] },
-        subAddressTypes: { prod: ['42'], testnet: ['63'] },
-        iAddressTypes: { prod: ['19'], testnet: ['54'] },
+        addressTypes: { prod: ['18'], stagenet: ['24'], testnet: ['53'] },
+        subAddressTypes: { prod: ['42'], stagenet: ['36'], testnet: ['63'] },
+        iAddressTypes: { prod: ['19'], stagenet: ['25'], testnet: ['54'] },
         validator: XMRValidator,
     }, {
         name: 'Aragon',

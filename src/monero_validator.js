@@ -15,6 +15,12 @@ var subAddressRegTest = new RegExp(
 var integratedAddressRegTest = new RegExp(
   '^4[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{105}$'
 )
+var stagenetAddressRegTest = new RegExp(
+  '^5[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$'
+)
+var stagenetSubAddressRegTest = new RegExp(
+  '^7[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$'
+)
 
 function validateNetwork(decoded, currency, networkType, addressType) {
   var network = currency.addressTypes
@@ -28,10 +34,12 @@ function validateNetwork(decoded, currency, networkType, addressType) {
   switch (networkType) {
     case 'prod':
       return network.prod.indexOf(at) >= 0
+    case 'stagenet':
+      return network.stagenet.indexOf(at) >= 0
     case 'testnet':
       return network.testnet.indexOf(at) >= 0
     case 'both':
-      return network.prod.indexOf(at) >= 0 || network.testnet.indexOf(at) >= 0
+      return network.prod.indexOf(at) >= 0 || network.testnet.indexOf(at) >= 0 || network.stagenet.indexOf(at) >= 0
     default:
       return false
   }
@@ -50,7 +58,15 @@ module.exports = {
   isValidAddress: function(address, currency, networkType) {
     networkType = networkType || DEFAULT_NETWORK_TYPE
     var addressType = 'standard'
-    if (networkType === 'testnet') {
+    if (networkType === 'stagenet') {
+      if (!stagenetAddressRegTest.test(address)) {
+        if (stagenetSubAddressRegTest.test(address)) {
+          addressType = 'subaddress'
+        } else {
+          return false;
+        }
+      }
+    } else if (networkType === 'testnet') {
       if (!testnetRegTest.test(address)) {
         return false;
       }

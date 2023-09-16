@@ -464,6 +464,7 @@ describe('WAValidator.validate()', function () {
             valid('47zQ5LAivg6hNCgijXSEFVLX7mke1bgM6YGLFaANDoJbgXDymcAAZvvMNt2PmMpqEe5qRy2zyfMYXdwpmdyitiFh84xnPG2', 'monero');
             valid('48bWuoDG75CXMDHbmPEvUF2hm1vLDic7ZJ7hqRkL65QR9p13AQAX4eEACXNk4YP115Q4KRVZnAvmMBHrcGfv9FvKPZnH6vH', 'XMR');
             valid('A2be3UvzMtkJtxRYgcCbQt2y7Rp2eLVGqNTWfZeankrWimSMM4y7uMP6B9oAZaHsXTj8KFSerkSkkVRuEuEca9QM8VhxCNU', 'monero', 'testnet');
+            valid('544G6C4Axkt9yaF21ya7QadsPghchnBJYRq1EAgnjN46CFiobSXdNKgPvMpxdFba1TPuSNYcSULP3XJKDM7wU2uM6BgyZh2', 'monero', 'stagenet');
 
             //integrated addresses
             valid('4Gd4DLiXzBmbVX2FZZ3Cvu6fUaWACup1qDowprUCje1kSP4FmbftiJMSfV8kWZXNqmVwj4m52xqtgFNUudVmsmGkGvkLcCibWfVUfUFVB7', 'monero');
@@ -472,6 +473,7 @@ describe('WAValidator.validate()', function () {
             // subaddress
             valid('8A9XmWsATrhfedtNhTMNKELwfCwMVAk2iVTdUJdFRb2AC4tV4VeBjsCLYR9cSQTwnvLo4MAuQFMLP6Si4xp6t6BS788db3t', 'monero');
             valid('87i7kA61fNvMboXiYWHVygPAggKJPETFqLXXcdH4mQTrECvrTxZMtt6e6owj1k8jUVjNR11eBuBMWHFBtxAwEVcm9dcSUxr', 'xmr');
+            valid('79iSDyvgc2C376rkgJH5YWD1sBDR7onRvY8eeacXMhBLeartG3TFbMC2UFvtaCgmCB9zNRy4pjjRYJ72mhHnbRSQRsEb3PM', 'xmr', 'stagenet');
         });
 
         it('should match the expected monero address type', function () {

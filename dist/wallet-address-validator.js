@@ -188,7 +188,8 @@ function toByteArray (b64) {
     ? validLen - 4
     : validLen
 
-  for (var i = 0; i < len; i += 4) {
+  var i
+  for (i = 0; i < len; i += 4) {
     tmp =
       (revLookup[b64.charCodeAt(i)] << 18) |
       (revLookup[b64.charCodeAt(i + 1)] << 12) |
@@ -2564,6 +2565,7 @@ module.exports = BigNumber;
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":5}],5:[function(require,module,exports){
+(function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4342,7 +4344,8 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":2,"ieee754":36}],6:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"base64-js":2,"buffer":5,"ieee754":36}],6:[function(require,module,exports){
 /*
  * The MIT License (MIT)
  *
@@ -14027,9 +14030,9 @@ var CURRENCIES = [
     }, {
         name: 'Monero',
         symbol: 'xmr',
-        addressTypes: { prod: ['18'], testnet: ['53'] },
-        subAddressTypes: { prod: ['42'], testnet: ['63'] },
-        iAddressTypes: { prod: ['19'], testnet: ['54'] },
+        addressTypes: { prod: ['18'], stagenet: ['24'], testnet: ['53'] },
+        subAddressTypes: { prod: ['42'], stagenet: ['36'], testnet: ['63'] },
+        iAddressTypes: { prod: ['19'], stagenet: ['25'], testnet: ['54'] },
         validator: XMRValidator,
     }, {
         name: 'Aragon',
@@ -15207,6 +15210,12 @@ var subAddressRegTest = new RegExp(
 var integratedAddressRegTest = new RegExp(
   '^4[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{105}$'
 )
+var stagenetAddressRegTest = new RegExp(
+  '^5[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$'
+)
+var stagenetSubAddressRegTest = new RegExp(
+  '^7[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{94}$'
+)
 
 function validateNetwork(decoded, currency, networkType, addressType) {
   var network = currency.addressTypes
@@ -15220,10 +15229,12 @@ function validateNetwork(decoded, currency, networkType, addressType) {
   switch (networkType) {
     case 'prod':
       return network.prod.indexOf(at) >= 0
+    case 'stagenet':
+      return network.stagenet.indexOf(at) >= 0
     case 'testnet':
       return network.testnet.indexOf(at) >= 0
     case 'both':
-      return network.prod.indexOf(at) >= 0 || network.testnet.indexOf(at) >= 0
+      return network.prod.indexOf(at) >= 0 || network.testnet.indexOf(at) >= 0 || network.stagenet.indexOf(at) >= 0
     default:
       return false
   }
@@ -15242,7 +15253,15 @@ module.exports = {
   isValidAddress: function(address, currency, networkType) {
     networkType = networkType || DEFAULT_NETWORK_TYPE
     var addressType = 'standard'
-    if (networkType === 'testnet') {
+    if (networkType === 'stagenet') {
+      if (!stagenetAddressRegTest.test(address)) {
+        if (stagenetSubAddressRegTest.test(address)) {
+          addressType = 'subaddress'
+        } else {
+          return false;
+        }
+      }
+    } else if (networkType === 'testnet') {
       if (!testnetRegTest.test(address)) {
         return false;
       }
